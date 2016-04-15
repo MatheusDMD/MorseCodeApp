@@ -49,6 +49,7 @@ public class Decoder {
                     if (currentNode.getCharacter() != null){
                         result += currentNode.getCharacter();
                         currentNode = nodes[0];
+                        count = 0;
                     }
 
                     else{
