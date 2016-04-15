@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class MorseTouch extends AppCompatActivity {
     List<String> morseText;
     Decoder decoder;
     String phrase;
+    TextView phraseView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +38,7 @@ public class MorseTouch extends AppCompatActivity {
         this.morseText = new ArrayList<String>();
         this.decoder = new Decoder();
         this.phrase = "";
+        this.phraseView = (TextView)findViewById(R.id.textMorse);
     }
 
     public boolean onTouchEvent(MotionEvent event){
@@ -64,6 +67,7 @@ public class MorseTouch extends AppCompatActivity {
                 morseText.add("/");
                 Log.e("MorseTouch", morseText.toString());
                 phrase += decoder.decodeMorse(morseText);
+                phraseView.setText(phrase);
                 Log.e("MorseTouch", phrase);
                 morseText.clear();
             }

@@ -31,26 +31,35 @@ public class Decoder {
     public String decodeMorse(List<String> morse){
         Node currentNode = nodes[0];
         String result = "";
+        int count = 0;
 
         for (String character:morse){
-            if (character == "."){
-                currentNode = currentNode.getDot();
-            }
-
-            else if (character == "-"){
-                currentNode = currentNode.getDash();
-            }
-
-            else if(character == "/"){
-                if (currentNode.getCharacter() != null){
-                    result += currentNode.getCharacter();
-                    currentNode = nodes[0];
+            if (count < 5){
+                if (character == "."){
+                    currentNode = currentNode.getDot();
+                    count ++;
                 }
 
-                else{
-                    //Throw an exception.
+                else if (character == "-"){
+                    currentNode = currentNode.getDash();
+                    count ++;
+                }
+
+                else if(character == "/"){
+                    if (currentNode.getCharacter() != null){
+                        result += currentNode.getCharacter();
+                        currentNode = nodes[0];
+                    }
+
+                    else{
+                        //Throw an exception.
+                    }
                 }
             }
+            else {
+                //Throw an exception.
+            }
+
         }
         result += " ";
         return result;

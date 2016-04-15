@@ -10,6 +10,8 @@
     tools:context="agile.app.morsecodeapp.MorseTouch">
 
     <TextView
+        android:id="@+id/textMorse"
+        android:textSize="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Toque em codigo morse" />
