@@ -1,4 +1,4 @@
-package morsetotext;
+package agile.app.morsecodeapp.morsetotext;
 
 /**
  * Created by marcelo on 15/04/16.

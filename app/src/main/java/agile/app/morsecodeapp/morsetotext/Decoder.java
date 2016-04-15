@@ -1,4 +1,6 @@
-package morsetotext;
+package agile.app.morsecodeapp.morsetotext;
+
+import java.util.List;
 
 /**
  * Created by marcelo on 15/04/16.
@@ -18,15 +20,15 @@ public class Decoder {
     }
 
     public void fillNodes(){
-        for (int i = 0; i <= morseValues.length; i++){
+        for (int i = 0; i < morseValues.length; i++){
             nodes[i] = new Node(morseValues[i]);
         }
-        for (int j = 0; j <= 31; j++){
+        for (int j = 0; j < 31; j++){
             nodes[j].setDotDash(nodes[j*2 + 1],nodes[j*2 + 2]);
         }
     }
 
-    public String decodeMorse(String[] morse){
+    public String decodeMorse(List<String> morse){
         Node currentNode = nodes[0];
         String result = "";
 
@@ -39,18 +41,18 @@ public class Decoder {
                 currentNode = currentNode.getDash();
             }
 
-            else if (character == "/"){
+            else if(character == "/"){
                 if (currentNode.getCharacter() != null){
                     result += currentNode.getCharacter();
+                    currentNode = nodes[0];
                 }
 
                 else{
                     //Throw an exception.
                 }
             }
-            result += " ";
         }
-
+        result += " ";
         return result;
     }
 
