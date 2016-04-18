@@ -34,7 +34,7 @@ public class Decoder {
         int count = 0;
 
         for (String character:morse){
-            if (count < 5){
+            if (count < 6){
                 if (character == "."){
                     currentNode = currentNode.getDot();
                     count ++;

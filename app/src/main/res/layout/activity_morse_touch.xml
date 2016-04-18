@@ -8,11 +8,29 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="agile.app.morsecodeapp.MorseTouch">
+    <LinearLayout
+        android:id="@+id/firstLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@+id/secondView"
+        android:orientation="vertical"></LinearLayout>
     <View
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_above="@+id/textMorseRaw"
+        android:layout_alignBottom="@+id/firstLayout"
         android:background="@android:color/black"/>
+    <View
+        android:id="@+id/secondView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_centerVertical="true" />
+    <LinearLayout
+        android:id="@+id/thirdLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignTop="@+id/secondView"
+        android:background="#E0E0E0"
+        android:orientation="vertical"></LinearLayout>
     <TextView
         android:id="@+id/textMorse"
         android:textSize="25dp"
@@ -20,10 +38,11 @@
         android:layout_height="wrap_content"
         android:text="Text preview" />
     <TextView
-        android:id="@+id/textMorseRaw"
+        android:id="@+id/touchWarning"
         android:textSize="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:text="Morse word preview" />
+        android:layout_alignTop="@id/thirdLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="Touch here to write in morse code" />
 </RelativeLayout>

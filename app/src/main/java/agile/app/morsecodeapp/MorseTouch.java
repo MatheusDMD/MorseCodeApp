@@ -28,11 +28,10 @@ public class MorseTouch extends AppCompatActivity {
     long timeDown;
     long timeUp;
     private List<String> morseText;
-    private String morseTextString;
     private Decoder decoder;
     private String phrase;
     private TextView phraseView;
-    private TextView phraseViewRaw;
+    private TextView phraseViewTouch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +46,7 @@ public class MorseTouch extends AppCompatActivity {
         this.decoder = new Decoder();
         this.phrase = "";
         this.phraseView = (TextView)findViewById(R.id.textMorse);
-        this.phraseViewRaw = (TextView)findViewById(R.id.textMorseRaw);
-        this.morseTextString = "";
+        this.phraseViewTouch = (TextView)findViewById(R.id.touchWarning);
     }
 
     public boolean onTouchEvent(MotionEvent event){
@@ -57,6 +55,7 @@ public class MorseTouch extends AppCompatActivity {
 
         if (!startRecording){
             this.startRecording = true;
+            phraseViewTouch.setText("");
         }
         if (startRecording){;
             if(event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -69,13 +68,13 @@ public class MorseTouch extends AppCompatActivity {
             }
 
             if(event.getAction() == MotionEvent.ACTION_UP) {
-                setActivityBackgroundColor(Color.parseColor("#FFFFFF"));
+                setActivityBackgroundColor(Color.parseColor("#E0E0E0"));
                 timeDown = System.currentTimeMillis() - startTimeDown;
                 startTimeUp = System.currentTimeMillis();
             }
         }
         if (timeDown > 0 && timeUp > 0) {
-            if (timeDown > 4 * unit){
+            if (timeDown > 5 * unit){
                 Log.e("MorseTouch", "EndPhrase");
                 morseText.add(" ");
                 phrase += decoder.decodeMorse(morseText);
@@ -101,9 +100,12 @@ public class MorseTouch extends AppCompatActivity {
                 if (timeUp > 2 * unit && timeUp < 6 * unit) {
                     Log.e("MorseTouch", "Space");
                     morseText.add(" ");
+                    phrase += decoder.decodeMorse(morseText);
+                    phraseView.setText(phrase);
+                    morseText.clear();
                 }
                 //LongPress
-                if (timeDown > 2 * unit && timeDown < 4 * unit) {
+                if (timeDown > 2 * unit && timeDown < 5 * unit) {
                     Log.e("MorseTouch", "LongPress");
                     morseText.add("-");
                 }
@@ -113,18 +115,12 @@ public class MorseTouch extends AppCompatActivity {
                     morseText.add(".");
                 }
             }
-            morseTextString = morseText.toString()
-                    .replace(",", "")  //remove the commas
-                    .replace("[", "")  //remove the right bracket
-                    .replace("]", "")  //remove the left bracket
-                    .trim();           //remove trailing spaces from partially initialized arrays
-            phraseViewRaw.setText(morseTextString);
         }
         return false;
     }
 
     public void setActivityBackgroundColor(int color) {
-        View view = this.getWindow().getDecorView();
+        View view = findViewById(R.id.thirdLayout);
         view.setBackgroundColor(color);
     }
 
