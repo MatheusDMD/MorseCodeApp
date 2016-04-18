@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
@@ -14,6 +15,9 @@ import java.util.List;
 
 import agile.app.morsecodeapp.morsetotext.Decoder;
 
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.PopupMenu;
+
 
 public class MorseTouch extends AppCompatActivity {
 
@@ -23,10 +27,12 @@ public class MorseTouch extends AppCompatActivity {
     long startTimeUp;
     long timeDown;
     long timeUp;
-    List<String> morseText;
-    Decoder decoder;
-    String phrase;
-    TextView phraseView;
+    private List<String> morseText;
+    private String morseTextString;
+    private Decoder decoder;
+    private String phrase;
+    private TextView phraseView;
+    private TextView phraseViewRaw;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +47,14 @@ public class MorseTouch extends AppCompatActivity {
         this.decoder = new Decoder();
         this.phrase = "";
         this.phraseView = (TextView)findViewById(R.id.textMorse);
+        this.phraseViewRaw = (TextView)findViewById(R.id.textMorseRaw);
+        this.morseTextString = "";
     }
 
     public boolean onTouchEvent(MotionEvent event){
+
+
+
         if (!startRecording){
             this.startRecording = true;
         }
@@ -78,7 +89,7 @@ public class MorseTouch extends AppCompatActivity {
             //Space
             if (timeUp > 2 * unit && timeUp < 6 * unit) {
                 Log.e("MorseTouch", "Space");
-                morseText.add("/");
+                morseText.add(" ");
             }
             //LongPress
             if (timeDown > 2 * unit) {
@@ -90,6 +101,12 @@ public class MorseTouch extends AppCompatActivity {
                 Log.e("MorseTouch", "ShortPress");
                 morseText.add(".");
             }
+            morseTextString = morseText.toString()
+                    .replace(",", "")  //remove the commas
+                    .replace("[", "")  //remove the right bracket
+                    .replace("]", "")  //remove the left bracket
+                    .trim();           //remove trailing spaces from partially initialized arrays
+            phraseViewRaw.setText(morseTextString);
         }
         return false;
     }
@@ -97,6 +114,12 @@ public class MorseTouch extends AppCompatActivity {
     public void setActivityBackgroundColor(int color) {
         View view = this.getWindow().getDecorView();
         view.setBackgroundColor(color);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 
 }

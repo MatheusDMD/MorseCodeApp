@@ -45,7 +45,7 @@ public class Decoder {
                     count ++;
                 }
 
-                else if(character == "/"){
+                else if(character == " "){
                     if (currentNode.getCharacter() != null){
                         result += currentNode.getCharacter();
                         currentNode = nodes[0];

@@ -8,11 +8,22 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="agile.app.morsecodeapp.MorseTouch">
-
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_above="@+id/textMorseRaw"
+        android:background="@android:color/black"/>
     <TextView
         android:id="@+id/textMorse"
-        android:textSize="20dp"
+        android:textSize="25dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Toque em codigo morse" />
+        android:text="Text preview" />
+    <TextView
+        android:id="@+id/textMorseRaw"
+        android:textSize="25dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Morse word preview" />
 </RelativeLayout>

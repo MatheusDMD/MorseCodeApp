@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MorseCodeApp</string>
+    <string name="velocidade">Velocidade</string>
 </resources>
