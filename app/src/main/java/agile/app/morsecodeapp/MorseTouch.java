@@ -75,31 +75,43 @@ public class MorseTouch extends AppCompatActivity {
             }
         }
         if (timeDown > 0 && timeUp > 0) {
-            //End Word
-            if (timeUp > 6 * unit && timeUp < 100 * unit) {
-                Log.e("MorseTouch", "EndWord");
-                Log.e("MorseTouch", "Space");
+            if (timeDown > 4 * unit){
+                Log.e("MorseTouch", "EndPhrase");
                 morseText.add(" ");
-                Log.e("MorseTouch", morseText.toString());
                 phrase += decoder.decodeMorse(morseText);
+                phrase += ".";
                 phraseView.setText(phrase);
                 Log.e("MorseTouch", phrase);
                 morseText.clear();
             }
-            //Space
-            if (timeUp > 2 * unit && timeUp < 6 * unit) {
-                Log.e("MorseTouch", "Space");
-                morseText.add(" ");
-            }
-            //LongPress
-            if (timeDown > 2 * unit) {
-                Log.e("MorseTouch", "LongPress");
-                morseText.add("-");
-            }
-            //ShortPress
-            if (timeDown < 2 * unit) {
-                Log.e("MorseTouch", "ShortPress");
-                morseText.add(".");
+            else {
+                //End Word
+                if (timeUp > 6 * unit && timeUp < 100 * unit) {
+                    Log.e("MorseTouch", "EndWord");
+                    Log.e("MorseTouch", "Space");
+                    morseText.add(" ");
+                    Log.e("MorseTouch", morseText.toString());
+                    phrase += decoder.decodeMorse(morseText);
+                    phrase += " ";
+                    phraseView.setText(phrase);
+                    Log.e("MorseTouch", phrase);
+                    morseText.clear();
+                }
+                //Space
+                if (timeUp > 2 * unit && timeUp < 6 * unit) {
+                    Log.e("MorseTouch", "Space");
+                    morseText.add(" ");
+                }
+                //LongPress
+                if (timeDown > 2 * unit && timeDown < 4 * unit) {
+                    Log.e("MorseTouch", "LongPress");
+                    morseText.add("-");
+                }
+                //ShortPress
+                if (timeDown < 2 * unit) {
+                    Log.e("MorseTouch", "ShortPress");
+                    morseText.add(".");
+                }
             }
             morseTextString = morseText.toString()
                     .replace(",", "")  //remove the commas

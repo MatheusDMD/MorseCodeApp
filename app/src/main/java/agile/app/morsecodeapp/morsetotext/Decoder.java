@@ -62,7 +62,6 @@ public class Decoder {
             }
 
         }
-        result += " ";
         return result;
     }
 
