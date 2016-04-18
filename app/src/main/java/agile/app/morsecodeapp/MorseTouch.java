@@ -1,9 +1,11 @@
 package agile.app.morsecodeapp;
 
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +49,7 @@ public class MorseTouch extends AppCompatActivity {
         }
         if (startRecording){;
             if(event.getAction() == MotionEvent.ACTION_DOWN) {
+                setActivityBackgroundColor(Color.parseColor("#2C2C2C"));
                 this.startTimeDown = 0;
                 this.timeDown = 0;
 
@@ -55,6 +58,7 @@ public class MorseTouch extends AppCompatActivity {
             }
 
             if(event.getAction() == MotionEvent.ACTION_UP) {
+                setActivityBackgroundColor(Color.parseColor("#FFFFFF"));
                 timeDown = System.currentTimeMillis() - startTimeDown;
                 startTimeUp = System.currentTimeMillis();
             }
@@ -88,6 +92,11 @@ public class MorseTouch extends AppCompatActivity {
             }
         }
         return false;
+    }
+
+    public void setActivityBackgroundColor(int color) {
+        View view = this.getWindow().getDecorView();
+        view.setBackgroundColor(color);
     }
 
 }
