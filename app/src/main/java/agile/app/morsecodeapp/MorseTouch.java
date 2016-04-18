@@ -79,7 +79,7 @@ public class MorseTouch extends AppCompatActivity {
             if (timeUp > 6 * unit && timeUp < 100 * unit) {
                 Log.e("MorseTouch", "EndWord");
                 Log.e("MorseTouch", "Space");
-                morseText.add("/");
+                morseText.add(" ");
                 Log.e("MorseTouch", morseText.toString());
                 phrase += decoder.decodeMorse(morseText);
                 phraseView.setText(phrase);
