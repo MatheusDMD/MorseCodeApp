@@ -24,8 +24,6 @@ import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,10 +79,10 @@ public class MorseTouch extends AppCompatActivity {
                 String phone = phoneText.getText().toString();
                 if(PhoneNumberUtils.isWellFormedSmsAddress(phone)) {
                     manager.sendTextMessage(phone, null, phrase, null, null);
-                    //Toast.makeText(MorseTouch.this, "Torpedo enviado!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MorseTouch.this, "SMS enviado!", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    //Toast.makeText(MainActivity.this, "Número inválido!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MorseTouch.this, "Número inválido!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
