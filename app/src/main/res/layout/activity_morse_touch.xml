@@ -32,6 +32,7 @@
         android:layout_centerInParent="true"
         android:background = "@drawable/roundedbutton"
         android:layout_alignBaseline="@id/secondView"
+        android:drawableStart="@drawable/send"
         />
     <Button
         android:layout_width="50dp"
@@ -43,6 +44,7 @@
         android:layout_toRightOf="@id/sendButton"
         android:background = "@drawable/roundedbutton2"
         android:layout_alignBaseline="@id/secondView"
+        android:drawableStart="@drawable/backspace"
         />
     <LinearLayout
         android:id="@+id/thirdLayout"
