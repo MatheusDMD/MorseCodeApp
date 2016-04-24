@@ -46,6 +46,19 @@
         android:layout_alignBaseline="@id/secondView"
         android:drawableStart="@drawable/backspace"
         />
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:id="@+id/menu"
+        android:layout_marginRight="10dp"
+        android:layout_centerInParent="true"
+        android:layout_toLeftOf="@id/sendButton"
+        android:background = "@drawable/roundedbutton2"
+        android:layout_alignBaseline="@id/secondView"
+        android:drawableStart="@drawable/menu"
+        />
+
     <LinearLayout
         android:id="@+id/thirdLayout"
         android:layout_width="match_parent"
