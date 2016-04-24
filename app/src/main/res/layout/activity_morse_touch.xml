@@ -33,6 +33,17 @@
         android:background = "@drawable/roundedbutton"
         android:layout_alignBaseline="@id/secondView"
         />
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:id="@+id/backspace"
+        android:layout_marginLeft="10dp"
+        android:layout_centerInParent="true"
+        android:layout_toRightOf="@id/sendButton"
+        android:background = "@drawable/roundedbutton2"
+        android:layout_alignBaseline="@id/secondView"
+        />
     <LinearLayout
         android:id="@+id/thirdLayout"
         android:layout_width="match_parent"
@@ -48,8 +59,7 @@
         android:textSize="25dp"
         android:visibility="gone"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="997705110" />
+        android:layout_height="wrap_content" />
     <TextView
         android:id="@+id/textMorse"
         android:textSize="25dp"
