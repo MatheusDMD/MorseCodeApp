@@ -24,28 +24,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_centerVertical="true" />
-    <Button
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:gravity="center"
-        android:id="@+id/sendButton"
-        android:layout_centerInParent="true"
-        android:background = "@drawable/roundedbutton"
-        android:layout_alignBaseline="@id/secondView"
-        android:drawableStart="@drawable/send"
-        />
-    <Button
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:gravity="center"
-        android:id="@+id/backspace"
-        android:layout_marginLeft="10dp"
-        android:layout_centerInParent="true"
-        android:layout_toRightOf="@id/sendButton"
-        android:background = "@drawable/roundedbutton2"
-        android:layout_alignBaseline="@id/secondView"
-        android:drawableStart="@drawable/backspace"
-        />
     <LinearLayout
         android:id="@+id/thirdLayout"
         android:layout_width="match_parent"
@@ -53,6 +31,51 @@
         android:layout_alignTop="@+id/secondView"
         android:background="#E0E0E0"
         android:orientation="vertical"></LinearLayout>
+    <ImageButton
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:id="@+id/sendButton"
+        android:layout_centerInParent="true"
+        android:layout_alignBaseline="@id/secondView"
+        android:clickable="true"
+        android:padding="12dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/send"
+        android:background = "@drawable/roundedbutton"
+        />
+
+    <ImageButton
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:id="@+id/menuButton"
+        android:layout_marginRight="15dp"
+        android:layout_centerInParent="true"
+        android:layout_toLeftOf="@id/sendButton"
+        android:background = "@drawable/roundedbutton2"
+        android:layout_alignBaseline="@id/secondView"
+        android:clickable="true"
+        android:scaleType="fitXY"
+        android:padding="12dp"
+        android:src="@drawable/menu"
+        />
+    <ImageButton
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:id="@+id/backspace"
+        android:layout_marginLeft="15dp"
+        android:layout_centerInParent="true"
+        android:layout_toRightOf="@id/sendButton"
+        android:background = "@drawable/roundedbutton2"
+        android:layout_alignBaseline="@id/secondView"
+        android:clickable="true"
+        android:scaleType="fitXY"
+        android:padding="12dp"
+        android:src="@drawable/backspace"
+        />
+
     <TextView
         android:id="@+id/textPhone"
         android:layout_alignParentTop="true"

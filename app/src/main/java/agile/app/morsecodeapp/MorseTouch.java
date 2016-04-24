@@ -1,37 +1,26 @@
 package agile.app.morsecodeapp;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.telephony.PhoneNumberUtils;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import android.Manifest;
-import android.app.PendingIntent;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.os.Bundle;
-import android.telephony.PhoneNumberUtils;
-import android.telephony.SmsManager;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import agile.app.morsecodeapp.morsetotext.Decoder;
-
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.PopupMenu;
 
 
 public class MorseTouch extends AppCompatActivity {
@@ -48,8 +37,8 @@ public class MorseTouch extends AppCompatActivity {
     private TextView phraseView;
     private TextView phraseViewTouch;
     private TextView phoneText;
-    private Button sendButton;
-    private Button backspace;
+    private ImageButton sendButton;
+    private ImageButton backspace;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,8 +60,8 @@ public class MorseTouch extends AppCompatActivity {
         this.phraseView = (TextView) findViewById(R.id.textMorse);
         this.phraseViewTouch = (TextView) findViewById(R.id.textMorse);
         this.phoneText = (TextView) findViewById(R.id.textPhone);
-        this.sendButton = (Button) findViewById(R.id.sendButton);
-        this.backspace = (Button) findViewById(R.id.backspace);
+        this.sendButton = (ImageButton) findViewById(R.id.sendButton);
+        this.backspace = (ImageButton) findViewById(R.id.backspace);
 
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
