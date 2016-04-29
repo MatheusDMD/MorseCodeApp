@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -39,6 +40,7 @@ public class MorseTouch extends AppCompatActivity {
     private TextView phoneText;
     private ImageButton sendButton;
     private ImageButton backspace;
+    private CountDownTimer countdown;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,41 +66,41 @@ public class MorseTouch extends AppCompatActivity {
         this.backspace = (ImageButton) findViewById(R.id.backspace);
 
         sendButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (send) {
-                    SmsManager manager = SmsManager.getDefault();
-                    String phone = phoneText.getText().toString();
-                    if (PhoneNumberUtils.isWellFormedSmsAddress(phone)) {
-                        if(phrase == ""){
-                            Toast.makeText(MorseTouch.this, "Empty Message", Toast.LENGTH_SHORT).show();
-                        }
-                        else {
-                            manager.sendTextMessage(phone, null, phraseView.getText().toString(), null, null);
-                            Toast.makeText(MorseTouch.this, "Sent", Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        Toast.makeText(MorseTouch.this, "Invalid telephone number", Toast.LENGTH_SHORT).show();
-                    }
-                    phoneText.setVisibility(View.GONE);
-                    phraseView.setText("");
-                    phrase = "";
-                    send = false;
-                }
-                else{
-                    phrase = "";
-                    morseText.clear();
-                    phoneText.setText("Telephone number");
-                    phoneText.setVisibility(View.VISIBLE);
-                    Toast.makeText(MorseTouch.this, "Type the telephone number", Toast.LENGTH_SHORT).show();
-                    send = true;
-                }
-            }
-        });
+              @Override
+              public void onClick(View view) {
+                  countdown.cancel();
+                  if (send) {
+                      SmsManager manager = SmsManager.getDefault();
+                      String phone = phoneText.getText().toString();
+                      if (PhoneNumberUtils.isWellFormedSmsAddress(phone)) {
+                          if (phrase == "") {
+                              Toast.makeText(MorseTouch.this, "Empty Message", Toast.LENGTH_SHORT).show();
+                          } else {
+                              manager.sendTextMessage(phone, null, phraseView.getText().toString(), null, null);
+                              Toast.makeText(MorseTouch.this, "Sent", Toast.LENGTH_SHORT).show();
+                          }
+                      } else {
+                          Toast.makeText(MorseTouch.this, "Invalid telephone number", Toast.LENGTH_SHORT).show();
+                      }
+                      phoneText.setVisibility(View.GONE);
+                      phraseView.setText("");
+                      phrase = "";
+                      send = false;
+                  } else {
+                      phrase = "";
+                      morseText.clear();
+                      phoneText.setText("Telephone number");
+                      phoneText.setVisibility(View.VISIBLE);
+                      Toast.makeText(MorseTouch.this, "Type the telephone number", Toast.LENGTH_SHORT).show();
+                      send = true;
+                  }
+              }
+          });
 
-        backspace.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+            backspace.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick (View view){
+                countdown.cancel();
                 if (send) {
                     if (phrase.length() != 0) {
                         phrase = phrase.substring(0, phrase.length() - 1);
@@ -119,7 +121,33 @@ public class MorseTouch extends AppCompatActivity {
                 }
             }
         });
-    }
+            countdown = new CountDownTimer(2*unit, 100) {
+                @Override
+                public void onTick(long millisUntilFinished) {}
+                @Override
+                public void onFinish() {
+                    if (!send) {
+                        morseText.add(" ");
+                        phrase += decoder.decodeMorse(morseText);
+                        phraseView.setText(phrase);
+                        morseText.clear();
+                    }
+                    else{
+                        Log.e("MorseTouch", "NumSpace");
+                        if (morseText.size() != 5) {
+                            //Toast.makeText(MorseTouch.this, "Invalid Digit", Toast.LENGTH_SHORT).show();
+                            morseText.clear();
+                        } else {
+                            morseText.add(" ");
+                            phrase += decoder.decodeMorse(morseText);
+                            phoneText.setText(phrase);
+                            morseText.clear();
+                        }
+                    }
+                }
+            };
+        }
+
 
     public boolean onTouchEvent(MotionEvent event) {
             if (!startRecording) {
@@ -132,17 +160,19 @@ public class MorseTouch extends AppCompatActivity {
                     setActivityBackgroundColor(Color.parseColor("#2C2C2C"));
                     this.startTimeDown = 0;
                     this.timeDown = 0;
-
                     startTimeDown = System.currentTimeMillis();
                     timeUp = System.currentTimeMillis() - startTimeUp;
+                    countdown.cancel();
                 }
 
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     setActivityBackgroundColor(Color.parseColor("#E0E0E0"));
                     timeDown = System.currentTimeMillis() - startTimeDown;
                     startTimeUp = System.currentTimeMillis();
+                    countdown.start();
+                    }
                 }
-            }
+
         if (!send) {
             if (timeDown > 0 && timeUp > 0) {
                 if (timeDown > 5 * unit) {
@@ -235,5 +265,4 @@ public class MorseTouch extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-
 }
