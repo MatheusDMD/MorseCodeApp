@@ -61,6 +61,7 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
 
     private ListView mDrawerList;
     private ArrayAdapter<String> mAdapter;
+    private ArrayAdapter<String> messageAdapter;
 
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
@@ -122,7 +123,9 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
 
         this.setupDrawer();
 
-
+        String[] messagesArray = getResources().getStringArray(array.messages);
+        messageAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, messagesArray);
+        messageList.setAdapter(messageAdapter);
 
         cursor1 = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
         startManagingCursor(cursor1);
