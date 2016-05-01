@@ -14,14 +14,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.telephony.PhoneNumberUtils;
 import android.telephony.SmsManager;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,12 +49,8 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
     private CountDownTimer countdown;
     private View touchView;
 
-    private String[] mPlanetTitles;
     private ListView mDrawerList;
     private ArrayAdapter<String> mAdapter;
-
-    private DrawerLayout drawerLayout;
-    private ActionBarDrawerToggle drawerListner;
 
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
@@ -69,8 +63,6 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_morse_touch);
-
-
 
         int permission = ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS);
         if(permission != PackageManager.PERMISSION_GRANTED) {
@@ -95,31 +87,15 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
-
-        String[] osArray = { "Android", "iOS", "Windows", "OS X", "Linux" };
-        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
-        mDrawerList.setAdapter(mAdapter);
+        addDrawerItems();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
 
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
-        //mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         mActivityTitle = getTitle().toString();
 
-
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-                R.string.drawer_open, R.string.drawer_close) {
-
-            /** Called when a drawer has settled in a completely open state. */
-            public void onDrawerOpened(View drawerView) {
-            }
-
-            /** Called when a drawer has settled in a completely closed state. */
-            public void onDrawerClosed(View view) {
-            }
-        };
         this.setupDrawer();
 
 
@@ -206,10 +182,40 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
             }
         };
     }
+    private void addDrawerItems() {
+        String[] morseArray = getResources().getStringArray(R.array.morse);
+        mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, morseArray);
+        mDrawerList.setAdapter(mAdapter);
+
+    }
 
     private void setupDrawer(){
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+                R.string.drawer_open, R.string.drawer_close) {
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                getSupportActionBar().setTitle("Morse-Dictionary");
+                invalidateOptionsMenu();
+            }
+
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                getSupportActionBar().setTitle(mActivityTitle);
+                invalidateOptionsMenu();
+            }
+        };
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -224,7 +230,8 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
         }
         return super.onOptionsItemSelected(item);
     }
-    
+
+
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
