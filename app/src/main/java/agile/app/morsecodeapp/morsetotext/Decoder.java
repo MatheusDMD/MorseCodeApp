@@ -12,7 +12,7 @@ public class Decoder {
             "f",null,"l",null,"p","j","b","x","c","y","z","q",null,null,"5","4",null,"3",null,null,null,"2",null,null,null,
             null,null,null,null,"1","6",null,null,null,null,null,null,null,"7",null,null,null,"8",null,"9","0"};
 
-    private Node[] nodes;
+    private static Node[] nodes;
 
     public Decoder() {
         this.nodes = new Node[numNodes];
