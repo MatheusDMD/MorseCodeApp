@@ -50,4 +50,7 @@
         <item>8 − − − · · </item>
         <item>9 − − − − · </item>
     </string-array>
+    <string-array name="messages">
+        <item></item>
+    </string-array>
 </resources>

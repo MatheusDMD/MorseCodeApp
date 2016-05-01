@@ -3,12 +3,15 @@ package agile.app.morsecodeapp;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.PhoneNumberUtils;
@@ -29,6 +32,9 @@ import java.util.List;
 
 import agile.app.morsecodeapp.morsetotext.Decoder;
 
+import static agile.app.morsecodeapp.R.*;
+
+
 
 public class MorseTouch extends AppCompatActivity implements View.OnTouchListener {
     private boolean send;
@@ -40,6 +46,7 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
     long timeUp;
     private List<String> morseText;
     private ListView contactList;
+    private ListView messageList;
     private Decoder decoder;
     private String phrase;
     private TextView phraseView;
@@ -59,18 +66,27 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
     private DrawerLayout mDrawerLayout;
     private String mActivityTitle;
 
+    Cursor cursor1;
+
+
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_morse_touch);
+        setContentView(layout.activity_morse_touch);
 
-        int permission = ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS);
-        if(permission != PackageManager.PERMISSION_GRANTED) {
+        int smsPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS);
+        if(smsPermission != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, 0);
         }
+
+        int contactPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS);
+        if(contactPermission != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS}, 0);
+        }
+
         this.send = false;
         this.startTimeDown = 0;
         this.startTimeUp = 0;
@@ -79,42 +95,62 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
         this.morseText = new ArrayList<String>();
         this.decoder = new Decoder();
         this.phrase = "";
-        this.phraseView = (TextView) findViewById(R.id.textMorse);
-        this.phraseViewTouch = (TextView) findViewById(R.id.textMorse);
-        this.phoneText = (TextView) findViewById(R.id.textPhone);
-        this.touchWarning = (TextView) findViewById(R.id.touchWarning);
-        this.sendButton = (ImageButton) findViewById(R.id.sendButton);
-        this.backspace = (ImageButton) findViewById(R.id.backspace);
-        this.menuButton = (ImageButton) findViewById(R.id.menuButton);
-        this.contactList = (ListView) findViewById(R.id.contactList);
-        this.touchView = (View) findViewById(R.id.touchView);
+        this.phraseView = (TextView) findViewById(id.textMorse);
+        this.phraseViewTouch = (TextView) findViewById(id.textMorse);
+        this.phoneText = (TextView) findViewById(id.textPhone);
+        this.touchWarning = (TextView) findViewById(id.touchWarning);
+        this.sendButton = (ImageButton) findViewById(id.sendButton);
+        this.backspace = (ImageButton) findViewById(id.backspace);
+        this.menuButton = (ImageButton) findViewById(id.menuButton);
+        this.contactList = (ListView) findViewById(id.contactList);
+        this.messageList = (ListView) findViewById(id.messageList);
+        this.touchView = (View) findViewById(id.touchView);
+
         touchView.setOnTouchListener(this);
 
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        mDrawerLayout = (DrawerLayout) findViewById(id.drawer_layout);
+        mDrawerList = (ListView) findViewById(id.left_drawer);
         addDrawerItems();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
 
-        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        mDrawerLayout = (DrawerLayout)findViewById(id.drawer_layout);
         mActivityTitle = getTitle().toString();
 
         this.setupDrawer();
 
-        menuButton.setOnClickListener(new View.onClickListener(){
+        cursor1 = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
+        startManagingCursor(cursor1);
+
+        String[] from = {ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER, ContactsContract.CommonDataKinds.Phone._ID};
+
+        int[] to = {android.R.id.text1, android.R.id.text2};
+
+        SimpleCursorAdapter listAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_2, cursor1, from, to);
+
+        contactList.setAdapter(listAdapter);
+
+
+        menuButton.setOnClickListener(new View.OnClickListener(){
+            boolean showing = false;
+
             @Override
             public void onClick(View view) {
-                touchWarning.setVisibillity(View.GONE);
-                contactList.setVisibility(View.VISIBLE);
-                String[] contacts = { "Celleiras", "Otofuji", "Marotzke", "Rach", "Hash#" };
-                mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_2, contacts);
-                mDrawerList.setAdapter(mAdapter);
-
+                if(!showing) {
+                    touchWarning.setVisibility(View.GONE);
+                    contactList.setVisibility(View.VISIBLE);
+                    showing = true;
+                }
+                else{
+                    touchWarning.setVisibility(View.VISIBLE);
+                    contactList.setVisibility(View.GONE);
+                    showing = false;
+                }
             }
-        }
+            });
 
         sendButton.setOnClickListener(new View.OnClickListener() {
               @Override
@@ -199,7 +235,7 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
         };
     }
     private void addDrawerItems() {
-        String[] morseArray = getResources().getStringArray(R.array.morse);
+        String[] morseArray = getResources().getStringArray(array.morse);
         mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, morseArray);
         mDrawerList.setAdapter(mAdapter);
 
@@ -207,7 +243,7 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
 
     private void setupDrawer(){
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-                R.string.drawer_open, R.string.drawer_close) {
+                string.drawer_open, string.drawer_close) {
 
             /** Called when a drawer has settled in a completely open state. */
             public void onDrawerOpened(View drawerView) {
@@ -363,7 +399,7 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
     }
 
     public void setActivityBackgroundColor(int color) {
-        View view = findViewById(R.id.thirdLayout);
+        View view = findViewById(id.thirdLayout);
         view.setBackgroundColor(color);
     }
 

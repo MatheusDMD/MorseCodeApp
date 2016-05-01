@@ -125,6 +125,14 @@
             android:gravity="center"
             android:visibility="gone"/>
 
+        <ListView
+            android:id="@+id/messageList"
+            android:layout_alignTop="@id/thirdLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:visibility="gone"/>
+
     </RelativeLayout>
 
     <ListView android:id="@+id/left_drawer"
