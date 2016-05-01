@@ -4,16 +4,37 @@ package agile.app.morsecodeapp;
  * Created by Eric on 29/04/16.
  */
 
-import static org.junitAssert.assertEquals;
-import org.juint.Test;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.List;
+
+import agile.app.morsecodeapp.morsetotext.Decoder;
+
+import static org.junit.Assert.assertEquals;
 
 public class MorseTeste {
+    Decoder decoder = new Decoder();
+    List<String> morseList;
+    @Before
+    public void clearMorseList() {
+        morseList.clear();
+    }
     @Test
-    public void verificaCaracter() {
-        Decoder decoderE = new Decoder();
-        string e = Decoder.decodeMorse(["."]);
-        assertEquals("e", result);
-
+    public void checkLetterE() {
+        morseList.add(".");
+        morseList.add(" ");
+        String e = decoder.decodeMorse(morseList);
+        assertEquals("e", e);
+    }
+    @Test
+    public void checkLetterI() {
+        morseList.add(".");
+        morseList.add(".");
+        morseList.add(" ");
+        String e = decoder.decodeMorse(morseList);
+        assertEquals("e", e);
+    }
         Decoder decoderI = new Decoder();
         string i = Decoder.decodeMorse([".","."]);
         assertEquals("i", result);
@@ -51,7 +72,7 @@ public class MorseTeste {
         assertEquals("f", result);
 
         Decoder decoder2 = new Decoder();
-        string 2 = Decoder.decodeMorse([".",".","-","-","-"]);
+        String dois = Decoder.decodeMorse([".",".","-","-","-"]);
         assertEquals("2", result);
 
         Decoder decoderA = new Decoder();
