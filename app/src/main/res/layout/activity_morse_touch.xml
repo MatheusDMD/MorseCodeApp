@@ -75,8 +75,27 @@
             android:clickable="true"
             android:scaleType="fitXY"
             android:padding="12dp"
-            android:src="@drawable/menu"
+            android:src="@drawable/mensagem"
+            android:visibility="visible"
             />
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:id="@+id/contactButton"
+            android:layout_marginRight="15dp"
+            android:layout_centerInParent="true"
+            android:layout_toLeftOf="@id/sendButton"
+            android:background = "@drawable/roundedbutton2"
+            android:layout_alignBaseline="@id/secondView"
+            android:clickable="true"
+            android:scaleType="fitXY"
+            android:padding="12dp"
+            android:src="@drawable/contatos"
+            android:visibility="gone"
+            />
+
         <ImageButton
             android:layout_width="50dp"
             android:layout_height="50dp"

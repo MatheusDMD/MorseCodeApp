@@ -35,7 +35,6 @@ import agile.app.morsecodeapp.morsetotext.Decoder;
 import static agile.app.morsecodeapp.R.*;
 
 
-
 public class MorseTouch extends AppCompatActivity implements View.OnTouchListener {
     private boolean send;
     private boolean startRecording = false;
@@ -56,6 +55,7 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
     private ImageButton sendButton;
     private ImageButton backspace;
     private ImageButton menuButton;
+    private ImageButton contactButton;
     private CountDownTimer countdown;
     private View touchView;
 
@@ -103,6 +103,7 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
         this.sendButton = (ImageButton) findViewById(id.sendButton);
         this.backspace = (ImageButton) findViewById(id.backspace);
         this.menuButton = (ImageButton) findViewById(id.menuButton);
+        this.contactButton = (ImageButton) findViewById(id.contactButton);
         this.contactList = (ListView) findViewById(id.contactList);
         this.messageList = (ListView) findViewById(id.messageList);
         this.touchView = (View) findViewById(id.touchView);
@@ -137,27 +138,52 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
 
         menuButton.setOnClickListener(new View.OnClickListener(){
             boolean showing = false;
-
             @Override
             public void onClick(View view) {
-                if(!showing) {
+                if (!showing){
                     touchWarning.setVisibility(View.GONE);
-                    contactList.setVisibility(View.VISIBLE);
+                    contactList.setVisibility(View.GONE);
+                    messageList.setVisibility(View.VISIBLE);
                     showing = true;
-                }
-                else{
+                } else {
                     touchWarning.setVisibility(View.VISIBLE);
                     contactList.setVisibility(View.GONE);
+                    messageList.setVisibility(View.GONE);
                     showing = false;
                 }
             }
             });
 
+        contactButton.setOnClickListener(new View.OnClickListener(){
+            boolean showing = false;
+
+            @Override
+            public void onClick(View view) {
+                if (!showing){
+                    touchWarning.setVisibility(View.GONE);
+                    contactList.setVisibility(View.VISIBLE);
+                    messageList.setVisibility(View.GONE);
+                    showing = true;
+                } else {
+                    touchWarning.setVisibility(View.VISIBLE);
+                    contactList.setVisibility(View.GONE);
+                    messageList.setVisibility(View.GONE);
+                    showing = false;
+                }
+
+            }
+        });
+
         sendButton.setOnClickListener(new View.OnClickListener() {
               @Override
               public void onClick(View view) {
                   countdown.cancel();
+                  contactList.setVisibility(View.GONE);
+                  messageList.setVisibility(View.GONE);
+                  touchWarning.setVisibility(View.VISIBLE);
                   if (send) {
+                      menuButton.setVisibility(View.VISIBLE);
+                      contactButton.setVisibility(View.GONE);
                       SmsManager manager = SmsManager.getDefault();
                       String phone = phoneText.getText().toString();
                       if (PhoneNumberUtils.isWellFormedSmsAddress(phone)) {
@@ -175,6 +201,8 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
                       phrase = "";
                       send = false;
                   } else {
+                      menuButton.setVisibility(View.GONE);
+                      contactButton.setVisibility(View.VISIBLE);
                       phrase = "";
                       morseText.clear();
                       phoneText.setText("Telephone number");
