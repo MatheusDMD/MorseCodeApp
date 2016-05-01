@@ -148,6 +148,22 @@ public class MorseTouch extends AppCompatActivity {
             };
         }
 
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putBoolean("send", send);
+        savedInstanceState.putString("MainTxt", phraseView.getText().toString());
+        savedInstanceState.putString("PhoneNum ", phoneText.getText().toString());
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        send = savedInstanceState.getBoolean("send");
+        phraseView.setText(savedInstanceState.getString("MainTxt"));
+        phoneText.setText(savedInstanceState.getString("PhoneNum"));
+    }
 
     public boolean onTouchEvent(MotionEvent event) {
             if (!startRecording) {
