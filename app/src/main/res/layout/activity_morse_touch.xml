@@ -120,6 +120,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="Touch here to write in morse code" />
+            android:text="Touch here to write in morse code"
+            android:visibility="visible"/>
+        <ListView
+            android:id="@+id/contactList"
+            android:layout_alignTop="@id/thirdLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:visibility="gone"/>
+
     </RelativeLayout>
 </android.support.v4.widget.DrawerLayout>

@@ -41,13 +41,16 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
     long timeDown;
     long timeUp;
     private List<String> morseText;
+    private ListView contactList;
     private Decoder decoder;
     private String phrase;
     private TextView phraseView;
     private TextView phraseViewTouch;
+    private TextView touchWarning;
     private TextView phoneText;
     private ImageButton sendButton;
     private ImageButton backspace;
+    private ImageButton menuButton;
     private CountDownTimer countdown;
     private View touchView;
 
@@ -87,8 +90,11 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
         this.phraseView = (TextView) findViewById(R.id.textMorse);
         this.phraseViewTouch = (TextView) findViewById(R.id.textMorse);
         this.phoneText = (TextView) findViewById(R.id.textPhone);
+        this.touchWarning = (TextView) findViewById(R.id.touchWarning);
         this.sendButton = (ImageButton) findViewById(R.id.sendButton);
         this.backspace = (ImageButton) findViewById(R.id.backspace);
+        this.menuButton = (ImageButton) findViewById(R.id.menuButton);
+        this.contactList = (ListView) findViewById(R.id.contactList);
         this.touchView = (View) findViewById(R.id.touchView);
         touchView.setOnTouchListener(this);
 
@@ -122,7 +128,17 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
         };
         this.setupDrawer();
 
+        menuButton.setOnClickListener(new View.onClickListener(){
+            @Override
+            public void onClick(View view) {
+                touchWarning.setVisibillity(View.GONE);
+                contactList.setVisibility(View.VISIBLE);
+                String[] contacts = { "Celleiras", "Otofuji", "Marotzke", "Rach", "Hash#" };
+                mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_2, contacts);
+                mDrawerList.setAdapter(mAdapter);
 
+            }
+        }
 
         sendButton.setOnClickListener(new View.OnClickListener() {
               @Override
