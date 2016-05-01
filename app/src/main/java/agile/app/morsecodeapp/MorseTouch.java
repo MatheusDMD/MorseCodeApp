@@ -2,19 +2,27 @@ package agile.app.morsecodeapp;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.PhoneNumberUtils;
 import android.telephony.SmsManager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,7 +32,7 @@ import java.util.List;
 import agile.app.morsecodeapp.morsetotext.Decoder;
 
 
-public class MorseTouch extends AppCompatActivity {
+public class MorseTouch extends AppCompatActivity implements View.OnTouchListener {
     private boolean send;
     private boolean startRecording = false;
     private long unit = 300;
@@ -41,11 +49,28 @@ public class MorseTouch extends AppCompatActivity {
     private ImageButton sendButton;
     private ImageButton backspace;
     private CountDownTimer countdown;
+    private View touchView;
+
+    private String[] mPlanetTitles;
+    private ListView mDrawerList;
+    private ArrayAdapter<String> mAdapter;
+
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle drawerListner;
+
+    private ActionBarDrawerToggle mDrawerToggle;
+    private DrawerLayout mDrawerLayout;
+    private String mActivityTitle;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_morse_touch);
+
+
 
         int permission = ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS);
         if(permission != PackageManager.PERMISSION_GRANTED) {
@@ -64,6 +89,40 @@ public class MorseTouch extends AppCompatActivity {
         this.phoneText = (TextView) findViewById(R.id.textPhone);
         this.sendButton = (ImageButton) findViewById(R.id.sendButton);
         this.backspace = (ImageButton) findViewById(R.id.backspace);
+        this.touchView = (View) findViewById(R.id.touchView);
+        touchView.setOnTouchListener(this);
+
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+
+        String[] osArray = { "Android", "iOS", "Windows", "OS X", "Linux" };
+        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
+        mDrawerList.setAdapter(mAdapter);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
+
+        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        //mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        mActivityTitle = getTitle().toString();
+
+
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+                R.string.drawer_open, R.string.drawer_close) {
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+            }
+
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+            }
+        };
+        this.setupDrawer();
+
+
 
         sendButton.setOnClickListener(new View.OnClickListener() {
               @Override
@@ -97,75 +156,106 @@ public class MorseTouch extends AppCompatActivity {
               }
           });
 
-            backspace.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick (View view){
-                countdown.cancel();
-                if (send) {
-                    if (phrase.length() != 0) {
-                        phrase = phrase.substring(0, phrase.length() - 1);
-                        phoneText.setText(phrase);
+        backspace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick (View view){
+            countdown.cancel();
+            if (send) {
+                if (phrase.length() != 0) {
+                    phrase = phrase.substring(0, phrase.length() - 1);
+                    phoneText.setText(phrase);
+                    morseText.clear();
+                } else {
+                    phoneText.setVisibility(View.GONE);
+                    phraseView.setText("");
+                    phrase = "";
+                    send = false;
+                }
+            } else {
+                if (phrase.length() != 0) {
+                    phrase = phrase.substring(0, phrase.length() - 1);
+                    phraseView.setText(phrase);
+                    morseText.clear();
+                }
+            }
+            }
+        });
+        countdown = new CountDownTimer(2*unit, 100) {
+            @Override
+            public void onTick(long millisUntilFinished) {}
+            @Override
+            public void onFinish() {
+                if (!send) {
+                    morseText.add(" ");
+                    phrase += decoder.decodeMorse(morseText);
+                    phraseView.setText(phrase);
+                    morseText.clear();
+                }
+                else{
+                    Log.e("MorseTouch", "NumSpace");
+                    if (morseText.size() != 5) {
+                        //Toast.makeText(MorseTouch.this, "Invalid Digit", Toast.LENGTH_SHORT).show();
                         morseText.clear();
                     } else {
-                        phoneText.setVisibility(View.GONE);
-                        phraseView.setText("");
-                        phrase = "";
-                        send = false;
-                    }
-                } else {
-                    if (phrase.length() != 0) {
-                        phrase = phrase.substring(0, phrase.length() - 1);
-                        phraseView.setText(phrase);
+                        morseText.add(" ");
+                        phrase += decoder.decodeMorse(morseText);
+                        phoneText.setText(phrase);
                         morseText.clear();
                     }
                 }
             }
-        });
-            countdown = new CountDownTimer(2*unit, 100) {
-                @Override
-                public void onTick(long millisUntilFinished) {}
-                @Override
-                public void onFinish() {
-                    if (!send) {
-                        morseText.add(" ");
-                        phrase += decoder.decodeMorse(morseText);
-                        phraseView.setText(phrase);
-                        morseText.clear();
-                    }
-                    else{
-                        Log.e("MorseTouch", "NumSpace");
-                        if (morseText.size() != 5) {
-                            //Toast.makeText(MorseTouch.this, "Invalid Digit", Toast.LENGTH_SHORT).show();
-                            morseText.clear();
-                        } else {
-                            morseText.add(" ");
-                            phrase += decoder.decodeMorse(morseText);
-                            phoneText.setText(phrase);
-                            morseText.clear();
-                        }
-                    }
-                }
-            };
+        };
+    }
+
+    private void setupDrawer(){
+        mDrawerToggle.setDrawerIndicatorEnabled(true);
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.action_settings){
+            //mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+            return true;
         }
+        if (mDrawerToggle.onOptionsItemSelected(item)){
+            //mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
+    }
 
-    public boolean onTouchEvent(MotionEvent event) {
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    public boolean onTouch(View touchView, MotionEvent event) {
             if (!startRecording) {
                 this.startRecording = true;
                 phraseViewTouch.setText("");
             }
             if (startRecording) {
-
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                Log.e("MorseTouch", String.valueOf(event.getActionMasked()));
+                int action = event.getAction() & MotionEvent.ACTION_MASK;
+                if (event.getAction() == MotionEvent.ACTION_DOWN || event.getActionMasked() == MotionEvent.ACTION_POINTER_DOWN) {
                     setActivityBackgroundColor(Color.parseColor("#2C2C2C"));
                     this.startTimeDown = 0;
                     this.timeDown = 0;
                     startTimeDown = System.currentTimeMillis();
                     timeUp = System.currentTimeMillis() - startTimeUp;
                     countdown.cancel();
+                    return true;
                 }
 
-                if (event.getAction() == MotionEvent.ACTION_UP) {
+                if (event.getAction() == MotionEvent.ACTION_UP || event.getActionMasked() == MotionEvent.ACTION_POINTER_UP) {
                     setActivityBackgroundColor(Color.parseColor("#E0E0E0"));
                     timeDown = System.currentTimeMillis() - startTimeDown;
                     startTimeUp = System.currentTimeMillis();
