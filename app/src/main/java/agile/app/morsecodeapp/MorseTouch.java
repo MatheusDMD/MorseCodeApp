@@ -122,15 +122,13 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
 
         this.setupDrawer();
 
+
+
         cursor1 = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
         startManagingCursor(cursor1);
-
         String[] from = {ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER, ContactsContract.CommonDataKinds.Phone._ID};
-
         int[] to = {android.R.id.text1, android.R.id.text2};
-
         SimpleCursorAdapter listAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_2, cursor1, from, to);
-
         contactList.setAdapter(listAdapter);
 
 
