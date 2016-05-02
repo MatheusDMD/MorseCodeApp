@@ -38,7 +38,7 @@
         <item>8 − − − · · </item>
         <item>9 − − − − · </item>
     </string-array>
-    <string-array name="morse_numbers">
+    <string-array name="morseNumbers">
         <item>0 − − − − − </item>
         <item>1 · − − − − </item>
         <item>2 · · − − − </item>

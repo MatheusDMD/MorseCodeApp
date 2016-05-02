@@ -24,6 +24,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,8 +53,8 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
     private String phrase;
     private TextView phraseView;
     private TextView phraseViewTouch;
-    private TextView touchWarning;
-    private TextView phoneText;
+    private ImageView touchWarning;
+    private TextView phoneView;
     private ImageButton sendButton;
     private ImageButton backspace;
     private ImageButton menuButton;
@@ -68,6 +69,9 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
     private String mActivityTitle;
+    private String phone;
+    private String contactPhone;
+    private boolean fromContact;
 
     Cursor cursor1;
 
@@ -100,8 +104,8 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
         this.phrase = "";
         this.phraseView = (TextView) findViewById(id.textMorse);
         this.phraseViewTouch = (TextView) findViewById(id.textMorse);
-        this.phoneText = (TextView) findViewById(id.textPhone);
-        this.touchWarning = (TextView) findViewById(id.touchWarning);
+        this.phoneView = (TextView) findViewById(id.textPhone);
+        this.touchWarning = (ImageView) findViewById(id.touchWarning);
         this.sendButton = (ImageButton) findViewById(id.sendButton);
         this.backspace = (ImageButton) findViewById(id.backspace);
         this.menuButton = (ImageButton) findViewById(id.menuButton);
@@ -109,13 +113,14 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
         this.contactList = (ListView) findViewById(id.contactList);
         this.messageList = (ListView) findViewById(id.messageList);
         this.touchView = (View) findViewById(id.touchView);
+        this.fromContact = false;
 
         touchView.setOnTouchListener(this);
 
 
         mDrawerLayout = (DrawerLayout) findViewById(id.drawer_layout);
         mDrawerList = (ListView) findViewById(id.left_drawer);
-        addDrawerItems();
+        addDrawerItemsAll();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -149,12 +154,29 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Cursor cursor = (Cursor) listAdapter.getItem(position);
-                phrase = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                phoneText.setText(phrase);
+                phrase = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+                contactPhone = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                phoneView.setText(phrase);
+                fromContact = true;
             }
         });
 
+        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(send) {
+                    phrase += mDrawerList.getItemAtPosition(position).toString().substring(0, 1).toLowerCase();
+                    phoneView.setText(phrase);
+                    Toast.makeText(MorseTouch.this,phoneView.getText().toString() , Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    phrase += mDrawerList.getItemAtPosition(position).toString().substring(0, 1).toLowerCase();
+                    phraseView.setText(phrase);
+                    Toast.makeText(MorseTouch.this,phraseView.getText().toString() , Toast.LENGTH_SHORT).show();
+                }
 
+            }
+        });
 
 
         menuButton.setOnClickListener(new View.OnClickListener(){
@@ -203,12 +225,18 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
                   messageList.setVisibility(View.GONE);
                   touchWarning.setVisibility(View.VISIBLE);
                   if (send) {
+                      addDrawerItemsAll();
                       menuButton.setVisibility(View.VISIBLE);
                       contactButton.setVisibility(View.GONE);
                       SmsManager manager = SmsManager.getDefault();
-                      String phone = phoneText.getText().toString();
+                      if(!fromContact) {
+                          phone = phoneView.getText().toString();
+                      }
+                      else{
+                          phone = contactPhone;
+                      }
                       if (PhoneNumberUtils.isWellFormedSmsAddress(phone)) {
-                          if (phrase == "") {
+                          if (phraseView.getText().toString() == "") {
                               Toast.makeText(MorseTouch.this, "Empty Message", Toast.LENGTH_SHORT).show();
                           } else {
                               manager.sendTextMessage(phone, null, phraseView.getText().toString(), null, null);
@@ -217,17 +245,18 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
                       } else {
                           Toast.makeText(MorseTouch.this, "Invalid telephone number", Toast.LENGTH_SHORT).show();
                       }
-                      phoneText.setVisibility(View.GONE);
+                      phoneView.setVisibility(View.GONE);
                       phraseView.setText("");
                       phrase = "";
                       send = false;
                   } else {
+                      addDrawerItemsNum();
                       menuButton.setVisibility(View.GONE);
                       contactButton.setVisibility(View.VISIBLE);
                       phrase = "";
                       morseText.clear();
-                      phoneText.setText("Telephone number");
-                      phoneText.setVisibility(View.VISIBLE);
+                      phoneView.setText("Telephone number");
+                      phoneView.setVisibility(View.VISIBLE);
                       Toast.makeText(MorseTouch.this, "Type the telephone number", Toast.LENGTH_SHORT).show();
                       send = true;
                   }
@@ -241,12 +270,14 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
             if (send) {
                 if (phrase.length() != 0) {
                     phrase = phrase.substring(0, phrase.length() - 1);
-                    phoneText.setText(phrase);
+                    phoneView.setText(phrase);
                     morseText.clear();
+                    if(phoneView.getText().toString().length()==0){
+                        phoneView.setText("Telephone Number");
+                    }
                 } else {
-                    phoneText.setVisibility(View.GONE);
-                    phraseView.setText("");
-                    phrase = "";
+                    phoneView.setVisibility(View.GONE);
+                    phrase = phraseView.getText().toString();
                     send = false;
                 }
             } else {
@@ -254,6 +285,9 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
                     phrase = phrase.substring(0, phrase.length() - 1);
                     phraseView.setText(phrase);
                     morseText.clear();
+                    if(phraseView.getText().toString().length()==0){
+                        phraseView.setText("Text Preview");
+                    }
                 }
             }
             }
@@ -277,15 +311,22 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
                     } else {
                         morseText.add(" ");
                         phrase += decoder.decodeMorse(morseText);
-                        phoneText.setText(phrase);
+                        phoneView.setText(phrase);
                         morseText.clear();
                     }
                 }
             }
         };
     }
-    private void addDrawerItems() {
+    private void addDrawerItemsAll() {
         String[] morseArray = getResources().getStringArray(array.morse);
+        mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, morseArray);
+        mDrawerList.setAdapter(mAdapter);
+
+    }
+
+    private void addDrawerItemsNum() {
+        String[] morseArray = getResources().getStringArray(array.morseNumbers);
         mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, morseArray);
         mDrawerList.setAdapter(mAdapter);
 
@@ -415,7 +456,7 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
                     Log.e("MorseTouch", "EndPhone");
                     morseText.add(" ");
                     phrase += decoder.decodeMorse(morseText);
-                    phoneText.setText(phrase);
+                    phoneView.setText(phrase);
                     Toast.makeText(MorseTouch.this, phrase, Toast.LENGTH_SHORT).show();
                     Log.e("MorseTouch", phrase);
                     morseText.clear();
@@ -429,7 +470,7 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
                     } else {
                         morseText.add(" ");
                         phrase += decoder.decodeMorse(morseText);
-                        phoneText.setText(phrase);
+                        phoneView.setText(phrase);
                         morseText.clear();
                     }
                 }
