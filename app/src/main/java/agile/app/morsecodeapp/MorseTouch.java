@@ -30,12 +30,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import agile.app.morsecodeapp.morsetotext.Decoder;
 
-import static agile.app.morsecodeapp.R.*;
+import static agile.app.morsecodeapp.R.array;
+import static agile.app.morsecodeapp.R.id;
+import static agile.app.morsecodeapp.R.layout;
+import static agile.app.morsecodeapp.R.string;
 
 
 public class MorseTouch extends AppCompatActivity implements View.OnTouchListener {
@@ -274,11 +276,18 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
                             phoneView.setText(phrase);
                             morseText.clear();
                             if (phoneView.getText().toString().length() == 0) {
-                                phoneView.setText("Telephone Number");
+                                phoneView.setText("Telephone number");
                             }
                         } else {
-                            phone = "";
-                            phoneView.setText("Telephone Number");
+                            phoneView.setVisibility(View.GONE);
+                            phrase = phraseView.getText().toString();
+                            menuButton.setVisibility(View.VISIBLE);
+                            contactButton.setVisibility(View.GONE);
+                            contactList.setVisibility(View.GONE);
+                            messageList.setVisibility(View.GONE);
+                            touchWarning.setVisibility(View.VISIBLE);
+                            addDrawerItemsAll();
+                            send = false;
                         }
                     } else {
                         phoneView.setVisibility(View.GONE);
@@ -289,6 +298,8 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
                         messageList.setVisibility(View.GONE);
                         touchWarning.setVisibility(View.VISIBLE);
                         send = false;
+                        fromContact = false;
+                        addDrawerItemsAll();
                     }
                 } else {
                     if (phrase.length() != 0) {
