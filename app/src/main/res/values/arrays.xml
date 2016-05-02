@@ -51,10 +51,14 @@
         <item>9 − − − − · </item>
     </string-array>
     <string-array name="messages">
-        <item>Sorry, I cant talk right now.</item>
-        <item>I am on my way.</item>
-        <item>Can I call you later?</item>
-        <item>Message 4.</item>
-        <item>Message 5.</item>
+        <item>I need help!</item>
+        <item>Please, come right away</item>
+        <item>I need to go to the bathroom</item>
+        <item>See you later</item>
+        <item>I am glad to see you!</item>
+        <item>Good Bye!</item>
+        <item> </item>
+        <item> </item>
+        <item> </item>
     </string-array>
 </resources>

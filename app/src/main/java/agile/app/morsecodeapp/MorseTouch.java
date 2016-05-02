@@ -38,13 +38,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+<<<<<<< HEAD
 import java.util.Arrays;
 import java.util.HashMap;
+=======
+>>>>>>> 2056af6167ca012f3160a29e1d08d4dd4075cd2f
 import java.util.List;
 
 import agile.app.morsecodeapp.morsetotext.Decoder;
 
-import static agile.app.morsecodeapp.R.*;
+import static agile.app.morsecodeapp.R.array;
+import static agile.app.morsecodeapp.R.id;
+import static agile.app.morsecodeapp.R.layout;
+import static agile.app.morsecodeapp.R.string;
 
 
 public class MorseTouch extends AppCompatActivity implements View.OnTouchListener {
@@ -265,6 +271,7 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
                       } else {
                           Toast.makeText(MorseTouch.this, "Invalid telephone number", Toast.LENGTH_SHORT).show();
                       }
+                      fromContact = false;
                       phoneView.setVisibility(View.GONE);
                       phraseView.setText("");
                       phrase = "";
@@ -285,33 +292,53 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
 
         backspace.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick (View view){
-            countdown.cancel();
-            if (send) {
-                if (phrase.length() != 0) {
-                    phrase = phrase.substring(0, phrase.length() - 1);
-                    phoneView.setText(phrase);
-                    morseText.clear();
-                    if(phoneView.getText().toString().length()==0){
-                        phoneView.setText("Telephone Number");
+            public void onClick (View view) {
+                countdown.cancel();
+                if (send) {
+                    if (!fromContact) {
+                        if (phrase.length() != 0) {
+                            phrase = phrase.substring(0, phrase.length() - 1);
+                            phoneView.setText(phrase);
+                            morseText.clear();
+                            if (phoneView.getText().toString().length() == 0) {
+                                phoneView.setText("Telephone number");
+                            }
+                        } else {
+                            phoneView.setVisibility(View.GONE);
+                            phrase = phraseView.getText().toString();
+                            menuButton.setVisibility(View.VISIBLE);
+                            contactButton.setVisibility(View.GONE);
+                            contactList.setVisibility(View.GONE);
+                            messageList.setVisibility(View.GONE);
+                            touchWarning.setVisibility(View.VISIBLE);
+                            addDrawerItemsAll();
+                            send = false;
+                        }
+                    } else {
+                        phoneView.setVisibility(View.GONE);
+                        phrase = phraseView.getText().toString();
+                        menuButton.setVisibility(View.VISIBLE);
+                        contactButton.setVisibility(View.GONE);
+                        contactList.setVisibility(View.GONE);
+                        messageList.setVisibility(View.GONE);
+                        touchWarning.setVisibility(View.VISIBLE);
+                        send = false;
+                        fromContact = false;
+                        addDrawerItemsAll();
                     }
                 } else {
-                    phoneView.setVisibility(View.GONE);
-                    phrase = phraseView.getText().toString();
-                    send = false;
-                }
-            } else {
-                if (phrase.length() != 0) {
-                    phrase = phrase.substring(0, phrase.length() - 1);
-                    phraseView.setText(phrase);
-                    morseText.clear();
-                    if(phraseView.getText().toString().length()==0){
-                        phraseView.setText("Text Preview");
+                    if (phrase.length() != 0) {
+                        phrase = phrase.substring(0, phrase.length() - 1);
+                        phraseView.setText(phrase);
+                        morseText.clear();
+                        if (phraseView.getText().toString().length() == 0) {
+                            phraseView.setText("Text Preview");
+                        }
                     }
                 }
             }
-            }
         });
+
         countdown = new CountDownTimer(2*unit, 100) {
             @Override
             public void onTick(long millisUntilFinished) {}
@@ -447,6 +474,9 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
     }
 
     public boolean onTouch(View touchView, MotionEvent event) {
+            if(fromContact){
+                Toast.makeText(MorseTouch.this, "You have already chosen a contact", Toast.LENGTH_SHORT).show();
+            }
             if (!startRecording) {
                 this.startRecording = true;
                 phraseViewTouch.setText("");
