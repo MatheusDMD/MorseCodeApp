@@ -10,6 +10,7 @@ import org.junit.Test;
 import java.util.List;
 
 import agile.app.morsecodeapp.morsetotext.Decoder;
+import dalvik.annotation.TestTarget;
 
 import static org.junit.Assert.assertEquals;
 
@@ -32,116 +33,306 @@ public class MorseTeste {
         morseList.add(".");
         morseList.add(".");
         morseList.add(" ");
-        String e = decoder.decodeMorse(morseList);
-        assertEquals("e", e);
+        String i = decoder.decodeMorse(morseList);
+        assertEquals("i", i);
     }
-        Decoder decoderI = new Decoder();
-        string i = Decoder.decodeMorse([".","."]);
-        assertEquals("i", result);
 
-        Decoder decoderS = new Decoder();
-        string s = Decoder.decodeMorse([".",".","."]);
-        assertEquals("s", result);
+    @Test
+    public void checkLetterS() {
+        morseList.add(".");
+        morseList.add(".");
+        morseList.add(".");
+        morseList.add(" ");
+        String s = decoder.decodeMorse(morseList);
+        assertEquals("s", s);
+    }
 
-        Decoder decoderH = new Decoder();
-        string h = Decoder.decodeMorse([".",".",".","."]);
-        assertEquals("h", result);
+    @Test
+    public void checkLetterH() {
+        morseList.add(".");
+        morseList.add(".");
+        morseList.add(".");
+        morseList.add(".");
+        morseList.add(" ");
+        String h = decoder.decodeMorse(morseList);
+        assertEquals("h", h);
+    } 
 
-        Decoder decoder5 = new Decoder();
-        string 5 = Decoder.decodeMorse(".",".",".",".",".");
-        assertEquals("5", result);
+    @Test
+    public void checkNumber5() {
+        morseList.add(".");
+        morseList.add(".");
+        morseList.add(".");
+        morseList.add(".");
+        morseList.add(".");
+        morseList.add(" ");
+        string five = Decoder.decodeMorse(morseList);
+        assertEquals("5", five);
+    }
 
-        Decoder decoder4 = new Decoder();
-        string 4 = Decoder.decodeMorse(".",".",".",".","-");
-        assertEquals("4", result);
+    @Test
+    public void checkNumber4() {
+        morseList.add(".");
+        morseList.add(".");
+        morseList.add(".");
+        morseList.add(".");
+        morseList.add("-");
+        morseList.add(" ");
+        string four = Decoder.decodeMorse(morseList);
+        assertEquals("4", four);
+    }
 
-        Decoder decoderV = new Decoder();
-        string v = Decoder.decodeMorse(".",".",".","-");
-        assertEquals("v", result);
+    @Test
+    public void checkLetterV() {
+        morseList.add(".");
+        morseList.add(".");
+        morseList.add(".");
+        morseList.add("-");
+        morseList.add(" ");
+        String v = decoder.decodeMorse(morseList);
+        assertEquals("v", v);
+    }
 
-        Decoder decoder3 = new Decoder();
-        string 3 = Decoder.decodeMorse(".",".",".","-","-");
-        assertEquals("3", result);
+    @Test
+    public void checkNumber3() {
+        morseList.add(".");
+        morseList.add(".");
+        morseList.add(".");
+        morseList.add("-");
+        morseList.add("-");
+        morseList.add(" ");
+        String three = decoder.decodeMorse(morseList);
+        assertEquals("3", three);
+    }
 
-        Decoder decoderU = new Decoder();
-        string u = Decoder.decodeMorse([".",".","-"]);
-        assertEquals("u", result);
+    @Test
+    public void checkLetterU() {
+        morseList.add(".");
+        morseList.add(".");
+        morseList.add("-");
+        morseList.add(" ");
+        String u = decoder.decodeMorse(morseList);
+        assertEquals("u", u);
+    }
 
-        Decoder decoderF = new Decoder();
-        string f = Decoder.decodeMorse([".",".","-","."]);
-        assertEquals("f", result);
+    @Test
+    public void checkLetterF() {
+        morseList.add(".");
+        morseList.add(".");
+        morseList.add("-");
+        morseList.add(".");
+        morseList.add(" ");
+        String f = decoder.decodeMorse(morseList);
+        assertEquals("f", f);
+    }
 
-        Decoder decoder2 = new Decoder();
-        String dois = Decoder.decodeMorse([".",".","-","-","-"]);
-        assertEquals("2", result);
+    @Test
+    public void checkNumber2() {
+        morseList.add(".");
+        morseList.add(".");
+        morseList.add("-");
+        morseList.add("-");
+        morseList.add("-");
+        morseList.add(" ");
+        String two = decoder.decodeMorse(morseList);
+        assertEquals("2", two);
+    }
 
-        Decoder decoderA = new Decoder();
-        string a = Decoder.decodeMorse([".","-"]);
-        assertEquals("a", result);
+    @Test
+    public void checkLetterA() {
+        morseList.add(".");
+        morseList.add("-");
+        morseList.add(" ");
+        String a = decoder.decodeMorse(morseList);
+        assertEquals("a", a);
+    }
 
-        Decoder decoderR = new Decoder();
-        string r = Decoder.decodeMorse([".","-","."]);
-        assertEquals("r", result);
+    @Test
+    public void checkLetterR() {
+        morseList.add(".");
+        morseList.add("-");
+        morseList.add(".");
+        morseList.add(" ");
+        String r = decoder.decodeMorse(morseList);
+        assertEquals("r", r);
+    }
 
-        Decoder decoderB = new Decoder();
-        string b = Decoder.decodeMorse(["-",".",]);
-        assertEquals("b", result);
+    @Test
+    public void checkLetterB() {
+        morseList.add("-");
+        morseList.add(".");
+        morseList.add(".");
+        morseList.add(".");
+        morseList.add(" ");
+        String b = decoder.decodeMorse(morseList);
+        assertEquals("b", b);
+    }
+    
+    @Test
+    public void checkLetterC() {
+        morseList.add("-");
+        morseList.add(".");
+        morseList.add("-");
+        morseList.add(".");
+        morseList.add(" ");
+        String c = decoder.decodeMorse(morseList);
+        assertEquals("c", c);
+    }
 
-        Decoder decoderC = new Decoder();
-        string c = Decoder.decoderMorse(["-",".","-","."]);
-        assertEquals("c", result);
+    @Test
+    public void checkLetterD() {
+        morseList.add("-");
+        morseList.add(".");
+        morseList.add(".");
+        morseList.add(" ");
+        String d = decoder.decodeMorse(morseList);
+        assertEquals("d", d);
+    }
 
-        Decoder decoderD = new Decoder();
-        string d = Decoder.decodeMorse(["-",".","."]);
-        assertEquals("d", result);
+    @Test
+    public void checkLetterG() {
+        morseList.add("-");
+        morseList.add("-");
+        morseList.add(".");
+        morseList.add(" ");
+        String g = decoder.decodeMorse(morseList);
+        assertEquals("g", g);
+    }
 
-        Decoder decoderE = new Decoder();
-        string e = Decoder.decodeMorse(["."]);
-        assertEquals("e", result);
+    @Test
+    public void checkLetterJ() {
+        morseList.add(".");
+        morseList.add("-");
+        morseList.add("-");
+        morseList.add("-");
+        morseList.add(" ");
+        String j = decoder.decodeMorse(morseList);
+        assertEquals("j", j);
+    }
 
-        Decoder decoderG = new Decoder();
-        string g = Decoder.decodeMorse(["-","-","."]);
-        assertEquals("g", result);
+    @Test
+    public void checkLetterK() {
+        morseList.add("-");
+        morseList.add(".");
+        morseList.add("-");
+        morseList.add(" ");
+        String k = decoder.decodeMorse(morseList);
+        assertEquals("k", k);
+    }
 
-        Decoder decoderJ = new Decoder();
-        string j = Decoder.decodeMorse([".","-","-","-"]);
-        assertEquals("j", result);
+    @Test
+    public void checkLetterL() {
+        morseList.add(".");
+        morseList.add("-");
+        morseList.add(".");
+        morseList.add(".");
+        morseList.add(" ");
+        String l = decoder.decodeMorse(morseList);
+        assertEquals("l", l);
+    }
 
-        Decoder decoderK = new Decoder();
-        string k = Decoder.decodeMorse(["-",".","-"]);
-        assertEquals("k", result);
+    @Test
+    public void checkLetterM() {
+        morseList.add("-");
+        morseList.add("-");
+        morseList.add(" ");
+        String m = decoder.decodeMorse(morseList);
+        assertEquals("m", m);
+    }
 
-        Decoder decoderL = new Decoder();
-        string l = Decoder.decodeMorse([".","-",".","."]);
-        assertEquals("l", result);
+    @Test
+    public void checkLetterN() {
+        morseList.add("-");
+        morseList.add(".");
+        morseList.add(" ");
+        String n = decoder.decodeMorse(morseList);
+        assertEquals("n", n);
+    }
 
-        Decoder decoderM = new Decoder();
-        string m = Decoder.decodeMorse(["-","-"]);
-        assertEquals("m", result);
+    @Test
+    public void checkLetterO() {
+        morseList.add("-");
+        morseList.add("-");
+        morseList.add("-");
+        morseList.add(" ");
+        String o = decoder.decodeMorse(morseList);
+        assertEquals("o", o);
+    }
 
-        Decoder decoderN = new Decoder();
-        string n = Decoder.decodeMorse(["-","."]);
-        assertEquals("n", result);
+    @Test
+    public void checkLetterP() {
+        morseList.add(".");
+        morseList.add("-");
+        morseList.add("-");
+        morseList.add(".");
+        morseList.add(" ");
+        String p = decoder.decodeMorse(morseList);
+        assertEquals("p", p);
+    }
 
-        Decoder decoderO = new Decoder();
-        string o = Decoder.decodeMorse(["-","-","-"]);
-        assertEquals("o", result);
+    @Test
+    public void checkLetterQ() {
+        morseList.add("-");
+        morseList.add("-");
+        morseList.add(".");
+        morseList.add("-");
+        morseList.add(" ");
+        String q = decoder.decodeMorse(morseList);
+        assertEquals("q", q);
+    }
 
-        Decoder decoderP = new Decoder();
-        string p = Decoder.decodeMorse([".","-","-","."]);
-        assertEquals("p", result);
 
-        Decoder decoderQ = new Decoder();
-        string q = Decoder.decodeMorse(["-","-",".","-"]);
-        assertEquals("q", result);
+    @Test
+    public void checkLetterT() {
+        morseList.add("-");
+        morseList.add(" ");
+        String t = decoder.decodeMorse(morseList);
+        assertEquals("t", b);
+    }
 
-        Decoder decoderT = new Decoder();
-        string t = Decoder.decodeMorse(["-"]);
-        assertEquals("t", result);
+    @Test
+    public void checkLetterW() {
+        morseList.add(".");
+        morseList.add("-");
+        morseList.add("-");
+        morseList.add(" ");
+        String w = decoder.decodeMorse(morseList);
+        assertEquals("w", w);
+    }
 
-        Decoder decoderW = new Decoder();
-        string w = Decoder.decodeMorse([".","-","-"]);
-        assertEquals("w", result);
+
+    @Test
+    public void checkLetterX() {
+        morseList.add("-");
+        morseList.add(".");
+        morseList.add(".");
+        morseList.add("-");
+        morseList.add(" ");
+        String x = decoder.decodeMorse(morseList);
+        assertEquals("x", x);
+    }
+
+    @Test
+    public void checkLetterY() {
+        morseList.add("-");
+        morseList.add(".");
+        morseList.add("-");
+        morseList.add("-");
+        morseList.add(" ");
+        String y = decoder.decodeMorse(morseList);
+        assertEquals("y", y);
+    }
+
+    @Test
+    public void checkLetterZ() {
+        morseList.add("-");
+        morseList.add("-");
+        morseList.add(".");
+        morseList.add(".");
+        morseList.add(" ");
+        String z = decoder.decodeMorse(morseList);
+        assertEquals("z", z);
+    }
 
         Decoder decoderX = new Decoder();
         string x = Decoder.decodeMorse(["-",".",".","-"]);
