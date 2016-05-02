@@ -29,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import agile.app.morsecodeapp.morsetotext.Decoder;
@@ -141,8 +142,19 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
         startManagingCursor(cursor1);
         String[] from = {ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER, ContactsContract.CommonDataKinds.Phone._ID};
         int[] to = {android.R.id.text1, android.R.id.text2};
-        SimpleCursorAdapter listAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_2, cursor1, from, to);
+        final SimpleCursorAdapter listAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_2, cursor1, from, to);
         contactList.setAdapter(listAdapter);
+
+        contactList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Cursor cursor = (Cursor) listAdapter.getItem(position);
+                phrase = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                phoneText.setText(phrase);
+            }
+        });
+
+
 
 
         menuButton.setOnClickListener(new View.OnClickListener(){
