@@ -1,6 +1,8 @@
 package agile.app.morsecodeapp;
 
 import android.Manifest;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.database.Cursor;
@@ -13,17 +15,22 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.PopupMenu;
 import android.telephony.PhoneNumberUtils;
 import android.telephony.SmsManager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -31,6 +38,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -75,6 +83,8 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
     private String contactPhone;
     private boolean fromContact;
 
+    private SharedPreferences mPrefs;
+
     Cursor cursor1;
 
 
@@ -117,6 +127,12 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
         this.touchView = (View) findViewById(id.touchView);
         this.all = (View) findViewById(id.all);
         this.fromContact = false;
+
+
+        //Tentantiva de criar icone de settings
+
+        //LayoutInflater inflator = (LayoutInflater) this .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        //View v = inflator.inflate(R.layout.custom_imageview, null);
 
         touchView.setOnTouchListener(this);
 
@@ -323,6 +339,44 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
         };
         all.setOnClickListener(null);
     }
+
+    // Tentativa de salvar estado ao girar a tela
+
+
+    /*
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        final TextView textBox = (TextView) findViewById(R.id.textMorse);
+        final TextView textBoxPhone = (TextView) findViewById(R.id.textPhone);
+        CharSequence userText = textBox.getText();
+        CharSequence userTextPhone = textBoxPhone.getText();
+        final List<String> morseSave = morseText;
+        final String morseTextSave = phrase;
+
+        outState.putCharSequence("savedText", userText);
+        outState.putCharSequence("savedTextPhone", userTextPhone);
+        outState.putStringArray("savedMorse", morseSave.toArray(new String[0]));
+        outState.putString("savedMorseText", morseTextSave);
+
+    }
+
+    protected void onRestoreInstanceState(Bundle savedState) {
+
+        final TextView textBox = (TextView) findViewById(R.id.textMorse);
+        final TextView textBoxPhone = (TextView) findViewById(R.id.textPhone);
+        CharSequence userText = savedState.getCharSequence("savedText");
+        CharSequence userTextPhone = savedState.getCharSequence("savedTextPhone");
+        final List<String> morseSave = Arrays.asList(savedState.getStringArray("savedMorse"));
+        final String morseTextSave = savedState.getString("savedMorseText");
+
+        morseText.addAll(morseSave);
+        phrase += morseTextSave;
+        textBox.setText(userText);
+        textBoxPhone.setText(userTextPhone);
+    }
+    */
+
     private void addDrawerItemsAll() {
         String[] morseArray = getResources().getStringArray(array.morse);
         mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, morseArray);
@@ -377,6 +431,9 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
             else{
                 mDrawerLayout.openDrawer(mDrawerList);
             }
+            return true;
+        }
+        if (item.getItemId() == R.id.velocidade){
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -501,5 +558,14 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
         View view = findViewById(id.thirdLayout);
         view.setBackgroundColor(color);
     }
+    // Menu para mudar velocidade
 
+    /*
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.popup, menu);
+        return true;
+    }
+    */
 }

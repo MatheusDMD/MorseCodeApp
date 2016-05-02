@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">MorseCodeApp</string>
-    <string name="velocidade">Velocidade</string>
+    <string name="velocidade">Typing Speed</string>
     <string name="title_activity_morse_display">MorseDisplay</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -10,4 +10,10 @@
 
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
+
+    <string name="one">Begginer</string>
+    <string name="two">Intermediate</string>
+    <string name="three">Advanced</string>
+    <string name="four">Expert</string>
+
 </resources>
