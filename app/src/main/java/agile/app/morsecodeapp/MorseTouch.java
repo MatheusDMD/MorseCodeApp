@@ -265,33 +265,44 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
 
         backspace.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick (View view){
-            countdown.cancel();
-            if (send) {
-                if (phrase.length() != 0) {
-                    phrase = phrase.substring(0, phrase.length() - 1);
-                    phoneView.setText(phrase);
-                    morseText.clear();
-                    if(phoneView.getText().toString().length()==0){
-                        phoneView.setText("Telephone Number");
+            public void onClick (View view) {
+                countdown.cancel();
+                if (send) {
+                    if (!fromContact) {
+                        if (phrase.length() != 0) {
+                            phrase = phrase.substring(0, phrase.length() - 1);
+                            phoneView.setText(phrase);
+                            morseText.clear();
+                            if (phoneView.getText().toString().length() == 0) {
+                                phoneView.setText("Telephone Number");
+                            }
+                        } else {
+                            phone = "";
+                            phoneView.setText("Telephone Number");
+                        }
+                    } else {
+                        phoneView.setVisibility(View.GONE);
+                        phrase = phraseView.getText().toString();
+                        menuButton.setVisibility(View.VISIBLE);
+                        contactButton.setVisibility(View.GONE);
+                        contactList.setVisibility(View.GONE);
+                        messageList.setVisibility(View.GONE);
+                        touchWarning.setVisibility(View.VISIBLE);
+                        send = false;
                     }
                 } else {
-                    phoneView.setVisibility(View.GONE);
-                    phrase = phraseView.getText().toString();
-                    send = false;
-                }
-            } else {
-                if (phrase.length() != 0) {
-                    phrase = phrase.substring(0, phrase.length() - 1);
-                    phraseView.setText(phrase);
-                    morseText.clear();
-                    if(phraseView.getText().toString().length()==0){
-                        phraseView.setText("Text Preview");
+                    if (phrase.length() != 0) {
+                        phrase = phrase.substring(0, phrase.length() - 1);
+                        phraseView.setText(phrase);
+                        morseText.clear();
+                        if (phraseView.getText().toString().length() == 0) {
+                            phraseView.setText("Text Preview");
+                        }
                     }
                 }
             }
-            }
         });
+
         countdown = new CountDownTimer(2*unit, 100) {
             @Override
             public void onTick(long millisUntilFinished) {}
@@ -382,6 +393,9 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
     }
 
     public boolean onTouch(View touchView, MotionEvent event) {
+            if(fromContact){
+                Toast.makeText(MorseTouch.this, "You have already chosen a contact", Toast.LENGTH_SHORT).show();
+            }
             if (!startRecording) {
                 this.startRecording = true;
                 phraseViewTouch.setText("");
