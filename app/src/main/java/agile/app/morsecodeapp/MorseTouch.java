@@ -247,6 +247,7 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
                       } else {
                           Toast.makeText(MorseTouch.this, "Invalid telephone number", Toast.LENGTH_SHORT).show();
                       }
+                      fromContact = false;
                       phoneView.setVisibility(View.GONE);
                       phraseView.setText("");
                       phrase = "";
