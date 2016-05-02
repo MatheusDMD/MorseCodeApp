@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -127,6 +128,14 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
         String[] messagesArray = getResources().getStringArray(array.messages);
         messageAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, messagesArray);
         messageList.setAdapter(messageAdapter);
+
+        messageList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                phrase = messageList.getItemAtPosition(position).toString();
+                phraseView.setText(phrase);
+            }
+        });
 
         cursor1 = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
         startManagingCursor(cursor1);
