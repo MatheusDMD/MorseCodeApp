@@ -10,6 +10,7 @@ import android.os.CountDownTimer;
 import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -61,6 +62,7 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
     private ImageButton contactButton;
     private CountDownTimer countdown;
     private View touchView;
+    private View all;
 
     private ListView mDrawerList;
     private ArrayAdapter<String> mAdapter;
@@ -113,12 +115,14 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
         this.contactList = (ListView) findViewById(id.contactList);
         this.messageList = (ListView) findViewById(id.messageList);
         this.touchView = (View) findViewById(id.touchView);
+        this.all = (View) findViewById(id.all);
         this.fromContact = false;
 
         touchView.setOnTouchListener(this);
 
 
         mDrawerLayout = (DrawerLayout) findViewById(id.drawer_layout);
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         mDrawerList = (ListView) findViewById(id.left_drawer);
         addDrawerItemsAll();
 
@@ -317,6 +321,7 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
                 }
             }
         };
+        all.setOnClickListener(null);
     }
     private void addDrawerItemsAll() {
         String[] morseArray = getResources().getStringArray(array.morse);
@@ -335,7 +340,6 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
     private void setupDrawer(){
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                 string.drawer_open, string.drawer_close) {
-
             /** Called when a drawer has settled in a completely open state. */
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
@@ -364,11 +368,15 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if(id == R.id.action_settings){
-            //mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
             return true;
         }
         if (mDrawerToggle.onOptionsItemSelected(item)){
-            //mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+            if(mDrawerLayout.isDrawerOpen(GravityCompat.START)){
+                mDrawerLayout.closeDrawer(mDrawerList);
+            }
+            else{
+                mDrawerLayout.openDrawer(mDrawerList);
+            }
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -494,9 +502,4 @@ public class MorseTouch extends AppCompatActivity implements View.OnTouchListene
         view.setBackgroundColor(color);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
 }

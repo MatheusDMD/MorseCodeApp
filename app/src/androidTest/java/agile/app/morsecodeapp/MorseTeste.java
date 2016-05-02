@@ -10,7 +10,6 @@ import org.junit.Test;
 import java.util.List;
 
 import agile.app.morsecodeapp.morsetotext.Decoder;
-import dalvik.annotation.TestTarget;
 
 import static org.junit.Assert.assertEquals;
 
@@ -66,7 +65,7 @@ public class MorseTeste {
         morseList.add(".");
         morseList.add(".");
         morseList.add(" ");
-        string five = Decoder.decodeMorse(morseList);
+        String five = decoder.decodeMorse(morseList);
         assertEquals("5", five);
     }
 
@@ -78,7 +77,7 @@ public class MorseTeste {
         morseList.add(".");
         morseList.add("-");
         morseList.add(" ");
-        string four = Decoder.decodeMorse(morseList);
+        String four = decoder.decodeMorse(morseList);
         assertEquals("4", four);
     }
 
@@ -287,7 +286,7 @@ public class MorseTeste {
         morseList.add("-");
         morseList.add(" ");
         String t = decoder.decodeMorse(morseList);
-        assertEquals("t", b);
+        assertEquals("t", t);
     }
 
     @Test
@@ -342,7 +341,7 @@ public class MorseTeste {
         morseList.add("-");
         morseList.add("-");
         morseList.add(" ");
-        string one = Decoder.decodeMorse(morseList);
+        String one = decoder.decodeMorse(morseList);
         assertEquals("1", one);
     }
 
@@ -355,7 +354,7 @@ public class MorseTeste {
         morseList.add(".");
         morseList.add(".");
         morseList.add(" ");
-        string six = Decoder.decodeMorse(morseList);
+        String six = decoder.decodeMorse(morseList);
         assertEquals("6", six);
     }    
 
@@ -367,7 +366,7 @@ public class MorseTeste {
         morseList.add(".");
         morseList.add(".");
         morseList.add(" ");
-        string seven = Decoder.decodeMorse(morseList);
+        String seven = decoder.decodeMorse(morseList);
         assertEquals("7", seven);
     }
 
@@ -379,7 +378,7 @@ public class MorseTeste {
         morseList.add(".");
         morseList.add(".");
         morseList.add(" ");
-        string eight = Decoder.decodeMorse(morseList);
+        String eight = decoder.decodeMorse(morseList);
         assertEquals("8", eight);
     }
 
@@ -391,7 +390,7 @@ public class MorseTeste {
         morseList.add("-");
         morseList.add(".");
         morseList.add(" ");
-        string nine = Decoder.decodeMorse(morseList);
+        String nine = decoder.decodeMorse(morseList);
         assertEquals("9", nine);
     }
 
@@ -403,7 +402,7 @@ public class MorseTeste {
         morseList.add("-");
         morseList.add("-");
         morseList.add(" ");
-        string zero = Decoder.decodeMorse(morseList);
+        String zero = decoder.decodeMorse(morseList);
         assertEquals("0", zero);
     }
 
